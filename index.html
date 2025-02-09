@@ -1,0 +1,512 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ImgMaster Tools – Convert | Adjust | Enhance</title>
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="ImgMaster Tools: A professional suite to convert image sizes, adjust quality, convert image formats, and apply creative filters." />
+  <meta name="keywords" content="Image Converter, Quality Adjuster, Format Converter, Image Filter, Professional Image Tools">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet">
+  <!-- (No Drag & Drop: only visible file inputs are used) -->
+  <style>
+    /* Global Reset */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    /* Body: Full-screen background with semi-transparent overlay */
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: url('https://images.unsplash.com/photo-1529156069898-49953e39b3ac?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+      background-size: cover;
+      position: relative;
+      color: #333;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(255,255,255,0.85);
+      z-index: -1;
+    }
+    
+    /* Header */
+    header {
+      background: rgba(44,62,80,0.9);
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      font-size: 22px;
+      font-weight: 700;
+      color: #ecf0f1;
+    }
+    .logo svg {
+      width: 60px;
+      height: 60px;
+      margin-right: 10px;
+    }
+    .tagline {
+      font-size: 14px;
+      color: #bdc3c7;
+      margin-top: 4px;
+      text-align: center;
+    }
+    nav { margin-top: 10px; }
+    nav a {
+      color: #ecf0f1;
+      text-decoration: none;
+      margin: 0 15px;
+      font-size: 16px;
+      transition: color 0.3s ease;
+    }
+    nav a:hover { color: #e74c3c; }
+    
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 80px 20px;
+      background: rgba(255,255,255,0.95);
+      margin: 20px auto;
+      max-width: 1000px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .hero h1 { font-size: 36px; margin-bottom: 20px; color: #2c3e50; }
+    .hero p { font-size: 18px; margin-bottom: 20px; color: #555; }
+    
+    /* Container for each tool */
+    .container {
+      max-width: 900px;
+      background: #fff;
+      padding: 30px 40px;
+      border-radius: 10px;
+      margin: 40px auto;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .container h2 { text-align: center; color: #2c3e50; margin-bottom: 15px; }
+    .container p, .container label { text-align: center; margin-bottom: 10px; }
+    
+    /* File Input Section (visible select file) */
+    .file-input {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .file-input label { font-weight: 500; }
+    
+    /* Status and Progress Messages */
+    .status {
+      text-align: center;
+      font-size: 14px;
+      color: #2c3e50;
+      margin: 10px auto;
+    }
+    
+    /* Input & Button Styling */
+    input[type="number"],
+    input[type="range"],
+    input[type="color"],
+    select,
+    input[type="file"] {
+      display: block;
+      width: 80%;
+      max-width: 400px;
+      margin: 10px auto 20px;
+      font-size: 16px;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      display: block;
+      margin: 20px auto;
+      background-color: #e74c3c;
+      color: #fff;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+    button:hover { background-color: #c0392b; }
+    .btn {
+      display: inline-block;
+      background-color: #27ae60;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 5px;
+      text-decoration: none;
+      margin-top: 15px;
+      transition: background-color 0.3s ease;
+    }
+    .btn:hover { background-color: #1e8449; }
+    
+    /* Section Spacing */
+    section { padding: 40px 0; }
+    section:nth-of-type(even) { background: #f7f7f7; }
+    
+    /* Instructions Section */
+    .instructions {
+      background: #ecf0f1;
+      border-radius: 8px;
+      padding: 15px 20px;
+      margin: 40px auto;
+      max-width: 900px;
+      font-size: 15px;
+      line-height: 1.5;
+      color: #333;
+    }
+    
+    /* Footer */
+    footer {
+      background: rgba(44,62,80,0.9);
+      padding: 20px;
+      text-align: center;
+      color: #ecf0f1;
+    }
+    footer a { color: #e74c3c; text-decoration: none; margin: 0 10px; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <a href="#home" class="logo">
+      <svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#e74c3c;"/>
+            <stop offset="100%" style="stop-color:#f1c40f;"/>
+          </linearGradient>
+        </defs>
+        <g transform="translate(5,5)">
+          <circle cx="15" cy="15" r="14" fill="url(#logoGrad)"/>
+          <polyline points="8,15 15,8 22,15" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          <polyline points="8,15 15,22 22,15" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+        </g>
+        <g transform="translate(40,20)">
+          <rect x="0" y="10" width="30" height="6" rx="3" ry="3" fill="#fff"/>
+          <circle cx="15" cy="13" r="4" fill="#2c3e50"/>
+        </g>
+        <g transform="translate(85,10)">
+          <line x1="0" y1="0" x2="12" y2="12" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          <line x1="12" y1="12" x2="16" y2="8" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          <line x1="12" y1="12" x2="8" y2="16" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+        </g>
+      </svg>
+      ImgMaster Tools
+    </a>
+    <div class="tagline">Convert • Adjust • Enhance</div>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#instructions">How It Works</a>
+      <a href="#sizeConverter">Size Converter</a>
+      <a href="#qualityAdjuster">Quality Adjuster</a>
+      <a href="#formatConverter">Format Converter</a>
+      <a href="#filterTool">Filter Tool</a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <h1>Welcome to ImgMaster Tools</h1>
+    <p>Your one-stop professional solution for image processing. Convert file sizes, adjust quality, change formats, and apply creative filters to your images.</p>
+    <a class="btn" href="#sizeConverter">Get Started</a>
+  </section>
+
+  <!-- Image Size Converter Section -->
+  <section id="sizeConverter">
+    <div class="container">
+      <h2>Image Size Converter</h2>
+      <p>Convert your image file size to your desired target (in KB) without compromising quality.</p>
+      <div class="file-input">
+        <label for="sizeFile">Select File:</label>
+        <input type="file" id="sizeFile" accept="image/*">
+      </div>
+      <p id="sizeStatus" class="status"></p>
+      <p id="originalSizeInfo" class="status"></p>
+      <label for="targetSize">Target Size (KB):</label>
+      <input type="number" id="targetSize" placeholder="Enter desired size in KB">
+      <button id="convertSizeBtn">Convert Image</button>
+      <p id="sizeProgress" class="status"></p>
+      <p id="convertedSizeInfo" class="status"></p>
+      <div id="sizeDownload"></div>
+    </div>
+  </section>
+
+  <!-- Quality Adjuster Section -->
+  <section id="qualityAdjuster">
+    <div class="container">
+      <h2>Quality Adjuster</h2>
+      <p>Manually adjust the image quality to balance file size and clarity.</p>
+      <div class="file-input">
+        <label for="qualityFile">Select File:</label>
+        <input type="file" id="qualityFile" accept="image/*">
+      </div>
+      <p id="qualityStatus" class="status"></p>
+      <p id="qualityOriginalSizeInfo" class="status"></p>
+      <label for="qualityRange">Quality (10% to 100%):</label>
+      <input type="range" id="qualityRange" min="10" max="100" value="100">
+      <span id="qualityValue">100%</span>
+      <button id="adjustQualityBtn">Apply Quality Adjustment</button>
+      <p id="qualityProgress" class="status"></p>
+      <p id="qualityConvertedSizeInfo" class="status"></p>
+      <div id="qualityDownload"></div>
+    </div>
+  </section>
+
+  <!-- Image Format Converter Section -->
+  <section id="formatConverter">
+    <div class="container">
+      <h2>Image Format Converter</h2>
+      <p>Convert your image to a different file format.</p>
+      <div class="file-input">
+        <label for="formatFile">Select File:</label>
+        <input type="file" id="formatFile" accept="image/*">
+      </div>
+      <p id="formatStatus" class="status"></p>
+      <div class="file-input">
+        <label for="outputFormat">Choose Output Format:</label>
+        <select id="outputFormat">
+          <option value="image/jpeg">JPEG</option>
+          <option value="image/png">PNG</option>
+          <option value="image/webp">WebP</option>
+        </select>
+      </div>
+      <button id="convertFormatBtn">Convert Format</button>
+      <p id="formatProgress" class="status"></p>
+      <div id="formatDownload"></div>
+    </div>
+  </section>
+
+  <!-- Image Filter Tool Section -->
+  <section id="filterTool">
+    <div class="container">
+      <h2>Image Filter Tool</h2>
+      <p>Apply creative filters to enhance your image.</p>
+      <div class="file-input">
+        <label for="filterFile">Select File:</label>
+        <input type="file" id="filterFile" accept="image/*">
+      </div>
+      <p id="filterStatus" class="status"></p>
+      <div class="file-input">
+        <label for="filterEffect">Choose Filter Effect:</label>
+        <select id="filterEffect">
+          <option value="none">None</option>
+          <option value="grayscale(100%)">Grayscale</option>
+          <option value="sepia(100%)">Sepia</option>
+          <option value="invert(100%)">Invert</option>
+        </select>
+      </div>
+      <button id="applyFilterBtn">Apply Filter</button>
+      <p id="filterProgress" class="status"></p>
+      <div id="filterDownload"></div>
+    </div>
+  </section>
+
+  <!-- Instructions Section -->
+  <section id="instructions">
+    <div class="instructions">
+      <h3>How to Use ImgMaster Tools</h3>
+      <ul style="list-style: disc; margin-left: 20px; text-align: left;">
+        <li><strong>Image Size Converter:</strong> Upload your image using the "Select File" option, enter your target size in KB, and click "Convert Image".</li>
+        <li><strong>Quality Adjuster:</strong> Upload your image, adjust the quality with the slider, and click "Apply Quality Adjustment".</li>
+        <li><strong>Image Format Converter:</strong> Upload your image, select the desired output format (JPEG, PNG, or WebP), and click "Convert Format".</li>
+        <li><strong>Image Filter Tool:</strong> Upload your image, choose a filter effect (e.g., Grayscale, Sepia, or Invert), and click "Apply Filter" to see the transformation.</li>
+      </ul>
+      <p>Each tool provides clear status messages and progress indicators during processing.</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 ImgMaster Tools. All Rights Reserved.</p>
+    <p>
+      <a href="#home">Home</a> |
+      <a href="#instructions">How It Works</a> |
+      <a href="#contact">Contact</a>
+    </p>
+    <p>
+      Follow us:
+      <a href="https://twitter.com" target="_blank">Twitter</a>
+      <a href="https://facebook.com" target="_blank">Facebook</a>
+      <a href="https://instagram.com" target="_blank">Instagram</a>
+    </p>
+  </footer>
+
+  <!-- JavaScript for Tool Processing -->
+  <script>
+    // --- IMAGE SIZE CONVERTER TOOL ---
+    document.getElementById('sizeFile').addEventListener('change', function() {
+      if (this.files && this.files[0]) {
+        sizeConverterFile = this.files[0];
+        document.getElementById("sizeStatus").innerText = "Image uploaded successfully.";
+        document.getElementById("originalSizeInfo").innerText = 'Original File Size: ' + (sizeConverterFile.size / 1024).toFixed(2) + ' KB';
+      }
+    });
+    async function convertImageToTargetSize() {
+      if (!sizeConverterFile) {
+        alert("Please upload an image for the Size Converter.");
+        return;
+      }
+      const targetKB = parseFloat(document.getElementById('targetSize').value);
+      if (isNaN(targetKB) || targetKB <= 0) {
+        alert("Please enter a valid target size in KB");
+        return;
+      }
+      document.getElementById('sizeProgress').innerText = "Processing image, please wait...";
+      const targetBytes = targetKB * 1024;
+      const img = new Image();
+      const reader = new FileReader();
+      reader.readAsDataURL(sizeConverterFile);
+      reader.onload = (event) => { img.src = event.target.result; };
+      img.onload = async () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        let low = 0.1, high = 1.0, bestBlob = null, bestQuality = high;
+        for (let i = 0; i < 10; i++) {
+          let mid = (low + high) / 2;
+          let blob = await new Promise(resolve => { canvas.toBlob((b) => resolve(b), 'image/jpeg', mid); });
+          if (!blob) break;
+          let size = blob.size;
+          if (!bestBlob || Math.abs(size - targetBytes) < Math.abs(bestBlob.size - targetBytes)) {
+            bestBlob = blob;
+            bestQuality = mid;
+          }
+          (size > targetBytes) ? high = mid : low = mid;
+        }
+        document.getElementById('convertedSizeInfo').innerText = 'Converted File Size: ' + (bestBlob.size / 1024).toFixed(2) +
+          ' KB (Quality: ' + (bestQuality * 100).toFixed(0) + '%)' +
+          (bestBlob.size < sizeConverterFile.size ? ' (Reduced)' : bestBlob.size > sizeConverterFile.size ? ' (Increased)' : ' (No change)');
+        const url = URL.createObjectURL(bestBlob);
+        document.getElementById('sizeDownload').innerHTML = `<a class="btn" href="${url}" download="converted.jpg">Download Converted Image</a>`;
+        document.getElementById('sizeProgress').innerText = "";
+      };
+    }
+    document.getElementById('convertSizeBtn').addEventListener('click', convertImageToTargetSize);
+
+    // --- QUALITY ADJUSTER TOOL ---
+    document.getElementById('qualityFile').addEventListener('change', function() {
+      if (this.files && this.files[0]) {
+        qualityToolFile = this.files[0];
+        document.getElementById("qualityStatus").innerText = "Image uploaded successfully.";
+        document.getElementById("qualityOriginalSizeInfo").innerText = 'Original File Size: ' + (qualityToolFile.size / 1024).toFixed(2) + ' KB';
+      }
+    });
+    async function adjustQuality() {
+      if (!qualityToolFile) {
+        alert("Please upload an image for the Quality Adjuster.");
+        return;
+      }
+      document.getElementById('qualityProgress').innerText = "Processing image, please wait...";
+      const quality = document.getElementById('qualityRange').value / 100;
+      const img = new Image();
+      const reader = new FileReader();
+      reader.readAsDataURL(qualityToolFile);
+      reader.onload = (event) => { img.src = event.target.result; };
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        canvas.toBlob((blob) => {
+          document.getElementById('qualityConvertedSizeInfo').innerText = 'Converted File Size: ' + (blob.size / 1024).toFixed(2) +
+            ' KB (Quality: ' + document.getElementById('qualityRange').value + '%)' +
+            (blob.size < qualityToolFile.size ? ' (Reduced)' : blob.size > qualityToolFile.size ? ' (Increased)' : ' (No change)');
+          const url = URL.createObjectURL(blob);
+          document.getElementById('qualityDownload').innerHTML = `<a class="btn" href="${url}" download="quality_adjusted.jpg">Download Quality Adjusted Image</a>`;
+          document.getElementById('qualityProgress').innerText = "";
+        }, 'image/jpeg', quality);
+      };
+    }
+    document.getElementById('adjustQualityBtn').addEventListener('click', adjustQuality);
+
+    // --- IMAGE FORMAT CONVERTER TOOL ---
+    let formatConverterFile = null;
+    document.getElementById('formatFile').addEventListener('change', function() {
+      if (this.files && this.files[0]) {
+        formatConverterFile = this.files[0];
+        document.getElementById("formatStatus").innerText = "Image uploaded successfully.";
+      }
+    });
+    async function convertFormat() {
+      if (!formatConverterFile) {
+        alert("Please upload an image for the Format Converter.");
+        return;
+      }
+      document.getElementById('formatProgress').innerText = "Processing image, please wait...";
+      const outputFormat = document.getElementById('outputFormat').value;
+      const img = new Image();
+      const reader = new FileReader();
+      reader.readAsDataURL(formatConverterFile);
+      reader.onload = (event) => { img.src = event.target.result; };
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        canvas.toBlob((blob) => {
+          const ext = outputFormat.split('/')[1];
+          const url = URL.createObjectURL(blob);
+          document.getElementById('formatDownload').innerHTML = `<a class="btn" href="${url}" download="converted.${ext}">Download Converted Image</a>`;
+          document.getElementById('formatProgress').innerText = "";
+        }, outputFormat);
+      };
+    }
+    document.getElementById('convertFormatBtn').addEventListener('click', convertFormat);
+
+    // --- IMAGE FILTER TOOL ---
+    let filterToolFile = null;
+    document.getElementById('filterFile').addEventListener('change', function() {
+      if (this.files && this.files[0]) {
+        filterToolFile = this.files[0];
+        document.getElementById("filterStatus").innerText = "Image uploaded successfully.";
+      }
+    });
+    async function applyFilter() {
+      if (!filterToolFile) {
+        alert("Please upload an image for the Filter Tool.");
+        return;
+      }
+      document.getElementById('filterProgress').innerText = "Processing image, please wait...";
+      const filterEffect = document.getElementById('filterEffect').value;
+      const img = new Image();
+      const reader = new FileReader();
+      reader.readAsDataURL(filterToolFile);
+      reader.onload = (event) => { img.src = event.target.result; };
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        if (filterEffect !== "none") {
+          ctx.filter = filterEffect;
+        }
+        ctx.drawImage(img, 0, 0);
+        canvas.toBlob((blob) => {
+          const url = URL.createObjectURL(blob);
+          document.getElementById('filterDownload').innerHTML = `<a class="btn" href="${url}" download="filtered.jpg">Download Filtered Image</a>`;
+          document.getElementById('filterProgress').innerText = "";
+        }, 'image/jpeg');
+      };
+    }
+    document.getElementById('applyFilterBtn').addEventListener('click', applyFilter);
+  </script>
+</body>
+</html>
